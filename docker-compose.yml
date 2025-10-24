@@ -1,18 +1,5 @@
-# docker-compose.yml - uses nginx as reverse proxy for http/https and vuln-app service
+version: "3.8"
 services:
-  nginx:
-    image: nginx:stable
-    container_name: dtlab-nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/certs:/etc/nginx/certs:ro
-    restart: unless-stopped
-    depends_on:
-      - vuln-app
-
   vuln-app:
     build: ./vuln-app
     container_name: vuln-app
@@ -20,6 +7,20 @@ services:
       - "3000:3000"
     volumes:
       - ./vuln-app/db.sqlite:/usr/src/app/db.sqlite
+      - ./logs:/var/log/dynatrace-security-lab
     environment:
       - NODE_ENV=development
+    restart: unless-stopped
+
+  dtlab-nginx:
+    image: nginx:1.25
+    container_name: dtlab-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - vuln-app
     restart: unless-stopped
