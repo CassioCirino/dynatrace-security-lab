@@ -1,7 +1,8 @@
-FROM node:20-alpine
-WORKDIR /usr/src/app
-COPY package.json ./
-RUN npm install
+FROM node:18-alpine
+WORKDIR /opt/vuln-app
+COPY package.json package.json
+RUN npm ci --production
 COPY . .
+RUN mkdir -p /opt/vuln-app/data /opt/vuln-app/logs && chmod -R 0777 /opt/vuln-app/data /opt/vuln-app/logs
 EXPOSE 3000
-CMD ["node", "app.js"]
+CMD ["node","server.js"]
