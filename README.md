@@ -10,5 +10,6 @@ Acesse: `https://<IP_DA_EC2>/`
 
 ## desinstalação rápida:
 ```bash
-curl -sSL https://raw.githubusercontent.com/CassioCirino/dynatrace-security-lab/main/uninstall.sh | sudo bash
+curl -sSL https://raw.githubusercontent.com/CassioCirino/dynatrace-security-lab/main/uninstall.sh | sudo bash -s -- --force --remove-docker
+
 ```
