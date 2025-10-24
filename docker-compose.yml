@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  vuln-app:
+    build: ./vuln-app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./vuln-app/logs:/usr/src/app/logs
+      - ./vuln-app/db:/usr/src/app/db
+    restart: unless-stopped
+
+  nginx-proxy:
+    image: nginx:stable
+    depends_on:
+      - vuln-app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    restart: unless-stopped
