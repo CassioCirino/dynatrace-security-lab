@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
-BASE="${1:-http://localhost:3000}"
-COUNT="${2:-200}"
-DELAY="${3:-0.05}"
-echo "[SIM] generating ${COUNT} requests to $BASE"
-for i in $(seq 1 $COUNT); do
-  case $((i % 4)) in
-    0) curl -s "${BASE}/" >/dev/null;;
-    1) curl -s "${BASE}/product?id=1" >/dev/null;;
-    2) curl -s "${BASE}/search?q=user${i}" >/dev/null;;
-    3) curl -s "${BASE}/cmd?cmd=echo+hi${i}" >/dev/null;;
-  esac
-  sleep "$DELAY"
+# small script to fire user-like requests to the app (useful if you want to run from server)
+BASE="http://127.0.0.1:3000"
+for i in $(seq 1 50); do
+  curl -s "${BASE}/" > /dev/null
+  curl -s "${BASE}/search?q=user${RANDOM}" > /dev/null
+  sleep 0.05
 done
-echo "[SIM] done"
+echo "Simulated 50 requests"
